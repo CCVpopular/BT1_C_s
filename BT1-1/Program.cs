@@ -11,7 +11,7 @@ class Program
     {
         while (true)
         {
-            Console.WriteLine("===== Quản lý xe =====");
+            Console.WriteLine("===== Quan ly xe =====");
             Console.WriteLine("1. Them xe o to");
             Console.WriteLine("2. Them xe tai");
             Console.WriteLine("3. Xuat danh sach xe");
