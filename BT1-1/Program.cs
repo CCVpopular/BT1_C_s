@@ -4,331 +4,303 @@ using System.Linq;
 
 class Program
 {
-    static List<Car> cars = new List<Car>();
-    static List<Truck> trucks = new List<Truck>();
-
     static void Main(string[] args)
     {
+        List<Vehicle> vehicles = new List<Vehicle>();
+
         while (true)
         {
-            Console.WriteLine("===== Quan ly xe =====");
-            Console.WriteLine("1. Them xe o to");
-            Console.WriteLine("2. Them xe tai");
-            Console.WriteLine("3. Xuat danh sach xe");
-            Console.WriteLine("4. Tim xe o to co cho ngoi nhieu nhat");
-            Console.WriteLine("5. Sap xep danh sach xe tai theo trong tai");
-            Console.WriteLine("6. Xuat danh sach cac bien so xe dep");
-            Console.WriteLine("7. Tinh so tien dang kiem dinh ky cua tung xe");
-            Console.WriteLine("8. Tinh thoi gian dang kiem dinh ky cua tung xe sap toi");
-            Console.WriteLine("9. Tinh tong so tien da dang kiem");
-            Console.WriteLine("0. Thoat");
+            Console.WriteLine("Chương trình quản lý xe");
+            Console.WriteLine("1. Thêm xe ô tô");
+            Console.WriteLine("2. Thêm xe tải");
+            Console.WriteLine("3. Xuất danh sách xe");
+            Console.WriteLine("4. Tìm xe ô tô có số chỗ ngồi nhiều nhất");
+            Console.WriteLine("5. Sắp xếp danh sách xe tải theo trọng tải tăng dần");
+            Console.WriteLine("6. Xuất danh sách các biển số xe đẹp");
+            Console.WriteLine("7. Tính số tiền đăng kiểm định kỳ của từng xe");
+            Console.WriteLine("8. Tính thời gian đăng kiểm định kỳ của từng xe sắp tới");
+            Console.WriteLine("9. Tính tổng số tiền đã đăng kiểm");
+            Console.WriteLine("0. Thoát");
+            Console.Write("Nhập lựa chọn: ");
 
-            Console.Write("Nhap lua chon cua ban: ");
             int choice = int.Parse(Console.ReadLine());
 
             switch (choice)
             {
                 case 1:
-                    AddCar();
+                    AddCar(vehicles);
                     break;
                 case 2:
-                    AddTruck();
+                    AddTruck(vehicles);
                     break;
                 case 3:
-                    DisplayAllVehicles();
+                    DisplayVehicles(vehicles);
                     break;
                 case 4:
-                    FindCarWithMostSeats();
+                    FindCarWithMostSeats(vehicles);
                     break;
                 case 5:
-                    SortTrucksByPayload();
+                    SortTrucksByLoadCapacity(vehicles);
                     break;
                 case 6:
-                    DisplayBeautifulLicensePlates();
+                    DisplayBeautifulLicensePlates(vehicles);
                     break;
                 case 7:
-                    CalculateInspectionFee();
+                    CalculateInspectionCost(vehicles);
                     break;
                 case 8:
-                    CalculateNextInspectionDate();
+                    CalculateNextInspectionDate(vehicles);
                     break;
                 case 9:
-                    CalculateTotalInspectionFees();
+                    CalculateTotalInspectionCost(vehicles);
                     break;
                 case 0:
-                    Environment.Exit(0);
-                    break;
+                    return;
                 default:
-                    Console.WriteLine("Lua chon khong hop le,vui long ch.");
+                    Console.WriteLine("Lựa chọn không hợp lệ. Hãy chọn lại.");
                     break;
             }
         }
     }
 
-    static void AddCar()
+    static void AddCar(List<Vehicle> vehicles)
     {
-        Console.Write("Nhap ngay san xuat (yyyy-MM-dd): ");
-        DateTime manufactureDate = DateTime.Parse(Console.ReadLine());
-        Console.Write("Nhap bien so xe (vd: 62B6-67519): ");
+        Console.Write("Nhập ngày sản xuất (dd/mm/yyyy): ");
+        DateTime productionDate = DateTime.Parse(Console.ReadLine());
+        Console.Write("Nhập biển số xe: ");
         string licensePlate = Console.ReadLine();
-        Console.Write("Nhap so cho ngoi: ");
+
+        Console.Write("Nhập số chỗ ngồi: ");
         int seats = int.Parse(Console.ReadLine());
-        Console.Write("Co dang ky kinh doanh van tai (true/false): ");
-        bool isBusiness = bool.Parse(Console.ReadLine());
+        Console.Write("Có đăng ký kinh doanh vận tải (yes/no): ");
+        bool isRegisteredForTransport = Console.ReadLine().ToLower() == "yes";
 
-        Car car = new Car(manufactureDate, licensePlate, seats, isBusiness);
-        cars.Add(car);
-        Console.WriteLine("Them xe o to thanh cong!");
+        Car car = new Car(productionDate, licensePlate, seats, isRegisteredForTransport);
+        vehicles.Add(car);
+        Console.WriteLine("Xe ô tô đã được thêm vào danh sách.");
     }
 
-    static void AddTruck()
+    static void AddTruck(List<Vehicle> vehicles)
     {
-        Console.Write("Nhap ngay san xuat (yyyy-MM-dd): ");
-        DateTime manufactureDate = DateTime.Parse(Console.ReadLine());
-        Console.Write("Nhap bien so xe (vd: 30C3-12345): ");
+        Console.Write("Nhập ngày sản xuất (dd/mm/yyyy): ");
+        DateTime productionDate = DateTime.Parse(Console.ReadLine());
+        Console.Write("Nhập biển số xe: ");
         string licensePlate = Console.ReadLine();
-        Console.Write("Nhap trong tai (tấn): ");
-        double payload = double.Parse(Console.ReadLine());
 
-        Truck truck = new Truck(manufactureDate, licensePlate, payload);
-        trucks.Add(truck);
-        Console.WriteLine("Them xe tai thanh cong!");
+        Console.Write("Nhập trọng tải (tấn): ");
+        double loadCapacity = double.Parse(Console.ReadLine());
+
+        Truck truck = new Truck(productionDate, licensePlate, loadCapacity);
+        vehicles.Add(truck);
+        Console.WriteLine("Xe tải đã được thêm vào danh sách.");
     }
 
-    static void DisplayAllVehicles()
+    static void DisplayVehicles(List<Vehicle> vehicles)
     {
-        Console.WriteLine("===== Danh sach xe o to =====");
-        foreach (var car in cars)
+        Console.WriteLine("Danh sách xe:");
+        foreach (var vehicle in vehicles)
         {
-            Console.WriteLine(car.ToString());
-        }
-
-        Console.WriteLine("===== Danh sach xe tai =====");
-        foreach (var truck in trucks)
-        {
-            Console.WriteLine(truck.ToString());
+            Console.WriteLine(vehicle);
         }
     }
 
-    static void FindCarWithMostSeats()
+    static void FindCarWithMostSeats(List<Vehicle> vehicles)
     {
-        var carWithMostSeats = cars.OrderByDescending(c => c.Seats).FirstOrDefault();
-        if (carWithMostSeats != null)
+        var cars = vehicles.OfType<Car>().ToList();
+        if (cars.Count > 0)
         {
-            Console.WriteLine($"Xe o to co so cho ngoi nhieu nhat: {carWithMostSeats.ToString()}");
+            var carWithMostSeats = cars.OrderByDescending(c => c.Seats).First();
+            Console.WriteLine("Xe ô tô có số chỗ ngồi nhiều nhất:");
+            Console.WriteLine(carWithMostSeats);
         }
         else
         {
-            Console.WriteLine("Khong co xe o to nao trong danh sach.");
+            Console.WriteLine("Không có xe ô tô trong danh sách.");
         }
     }
 
-    static void SortTrucksByPayload()
+    static void SortTrucksByLoadCapacity(List<Vehicle> vehicles)
     {
-        var sortedTrucks = trucks.OrderBy(t => t.Payload).ToList();
-        Console.WriteLine("===== Danh sach xe tai sap xep theo trong tai tang dan =====");
-        foreach (var truck in sortedTrucks)
+        var trucks = vehicles.OfType<Truck>().ToList();
+        if (trucks.Count > 0)
         {
-            Console.WriteLine(truck.ToString());
-        }
-    }
-
-    static void DisplayBeautifulLicensePlates()
-    {
-        var beautifulLicensePlates = cars.Where(c => IsBeautifulLicensePlate(c.LicensePlate))
-                                          .Select(c => c.LicensePlate)
-                                          .ToList();
-        Console.WriteLine("===== Danh sach cac bien so xe đep =====");
-        foreach (var licensePlate in beautifulLicensePlates)
-        {
-            Console.WriteLine(licensePlate);
-        }
-    }
-
-    static void CalculateInspectionFee()
-    {
-        double totalFee = 0;
-
-        foreach (var car in cars)
-        {
-            int inspectionInterval = car.CalculateInspectionInterval();
-            double inspectionFee = car.CalculateInspectionFee();
-
-            totalFee += inspectionFee;
-
-            Console.WriteLine($"Bien so: {car.LicensePlate}, Thoi gian đang kiem: {inspectionInterval} thang, Phi đang kiem: {inspectionFee} VND");
-        }
-
-        foreach (var truck in trucks)
-        {
-            int inspectionInterval = truck.CalculateInspectionInterval();
-            double inspectionFee = truck.CalculateInspectionFee();
-
-            totalFee += inspectionFee;
-
-            Console.WriteLine($"Bien so: {truck.LicensePlate}, Thoi gian đang kiem: {inspectionInterval} thang, Phi đang kiem: {inspectionFee} VND");
-        }
-
-        Console.WriteLine($"Tong phi đang kiem: {totalFee} VND");
-    }
-
-    static void CalculateNextInspectionDate()
-    {
-        Console.Write("Nhap bien so xe: ");
-        string licensePlate = Console.ReadLine();
-
-        var car = cars.FirstOrDefault(c => c.LicensePlate == licensePlate);
-        var truck = trucks.FirstOrDefault(t => t.LicensePlate == licensePlate);
-
-        if (car != null)
-        {
-            int nextInspectionInterval = car.CalculateInspectionInterval();
-            DateTime nextInspectionDate = DateTime.Now.AddMonths(nextInspectionInterval);
-
-            Console.WriteLine($"Xe o to co bien so {licensePlate}, Thoi gian đang kiem tiep theo: {nextInspectionDate.ToString("yyyy-MM-dd")}");
-        }
-        else if (truck != null)
-        {
-            int nextInspectionInterval = truck.CalculateInspectionInterval();
-            DateTime nextInspectionDate = DateTime.Now.AddMonths(nextInspectionInterval);
-
-            Console.WriteLine($"Xe tai co bien so {licensePlate}, Thoi gian đang kiem tiep theo: {nextInspectionDate.ToString("yyyy-MM-dd")}");
+            var sortedTrucks = trucks.OrderBy(t => t.LoadCapacity).ToList();
+            Console.WriteLine("Danh sách xe tải theo trọng tải tăng dần:");
+            foreach (var truck in sortedTrucks)
+            {
+                Console.WriteLine(truck);
+            }
         }
         else
         {
-            Console.WriteLine("Khong tim thay xe voi bien so đa nhap.");
+            Console.WriteLine("Không có xe tải trong danh sách.");
         }
     }
 
-    static void CalculateTotalInspectionFees()
+    static void DisplayBeautifulLicensePlates(List<Vehicle> vehicles)
     {
-        double totalFee = 0;
-
-        foreach (var car in cars)
+        var beautifulLicensePlates = vehicles.Where(v => v.HasBeautifulLicensePlate()).ToList();
+        if (beautifulLicensePlates.Count > 0)
         {
-            double inspectionFee = car.CalculateInspectionFee();
-            totalFee += inspectionFee;
+            Console.WriteLine("Danh sách biển số xe đẹp:");
+            foreach (var vehicle in beautifulLicensePlates)
+            {
+                Console.WriteLine(vehicle.LicensePlate);
+            }
         }
-
-        foreach (var truck in trucks)
+        else
         {
-            double inspectionFee = truck.CalculateInspectionFee();
-            totalFee += inspectionFee;
+            Console.WriteLine("Không có biển số xe đẹp trong danh sách.");
         }
-
-        Console.WriteLine($"Tong so tien đa đang kiem: {totalFee} VND");
     }
 
-    static bool IsBeautifulLicensePlate(string licensePlate)
+    static void CalculateInspectionCost(List<Vehicle> vehicles)
     {
-        string lastFiveDigits = licensePlate.Substring(6, 5);
-        return lastFiveDigits.Distinct().Count() <= 2;
+        Console.Write("Nhập ngày kiểm định (dd/mm/yyyy): ");
+        DateTime inspectionDate = DateTime.Parse(Console.ReadLine());
+
+        double totalCost = 0;
+        foreach (var vehicle in vehicles)
+        {
+            totalCost += vehicle.CalculateInspectionCost(inspectionDate);
+        }
+
+        Console.WriteLine($"Tổng số tiền đăng kiểm định kỳ là: {totalCost:C}");
+    }
+
+    static void CalculateNextInspectionDate(List<Vehicle> vehicles)
+    {
+        Console.Write("Nhập ngày hiện tại (dd/mm/yyyy): ");
+        DateTime currentDate = DateTime.Parse(Console.ReadLine());
+
+        Console.WriteLine("Thời gian đăng kiểm định kỳ của từng xe sắp tới:");
+        foreach (var vehicle in vehicles)
+        {
+            DateTime nextInspectionDate = vehicle.CalculateNextInspectionDate(currentDate);
+            Console.WriteLine($"{vehicle.LicensePlate}: {nextInspectionDate:dd/MM/yyyy}");
+        }
+    }
+
+    static void CalculateTotalInspectionCost(List<Vehicle> vehicles)
+    {
+        double totalCost = 0;
+        foreach (var vehicle in vehicles)
+        {
+            totalCost += vehicle.CalculateInspectionCost(DateTime.Now);
+        }
+
+        Console.WriteLine($"Tổng số tiền đã đăng kiểm là: {totalCost:C}");
     }
 }
 
 class Vehicle
 {
-    public DateTime ManufactureDate { get; }
+    public DateTime ProductionDate { get; }
     public string LicensePlate { get; }
 
-    public Vehicle(DateTime manufactureDate, string licensePlate)
+    public Vehicle(DateTime productionDate, string licensePlate)
     {
-        ManufactureDate = manufactureDate;
+        ProductionDate = productionDate;
         LicensePlate = licensePlate;
     }
 
-    public virtual int CalculateInspectionInterval()
+    public virtual double CalculateInspectionCost(DateTime inspectionDate)
     {
-        return 6;
+        return 0;
+    }
+
+    public virtual DateTime CalculateNextInspectionDate(DateTime currentDate)
+    {
+        return DateTime.Now;
+    }
+
+    public virtual bool HasBeautifulLicensePlate()
+    {
+        return false;
     }
 
     public override string ToString()
     {
-        return $"Bien so: {LicensePlate}, Ngay san xuat: {ManufactureDate.ToString("yyyy-MM-dd")}";
+        return $"Biển số: {LicensePlate}, Ngày sản xuất: {ProductionDate:dd/MM/yyyy}";
     }
 }
 
 class Car : Vehicle
 {
     public int Seats { get; }
-    public bool IsBusiness { get; }
+    public bool IsRegisteredForTransport { get; }
 
-    public Car(DateTime manufactureDate, string licensePlate, int seats, bool isBusiness)
-        : base(manufactureDate, licensePlate)
+    public Car(DateTime productionDate, string licensePlate, int seats, bool isRegisteredForTransport)
+        : base(productionDate, licensePlate)
     {
         Seats = seats;
-        IsBusiness = isBusiness;
+        IsRegisteredForTransport = isRegisteredForTransport;
     }
 
-    public override int CalculateInspectionInterval()
+    public override double CalculateInspectionCost(DateTime inspectionDate)
     {
-        int yearsSinceManufacture = DateTime.Now.Year - ManufactureDate.Year;
-        int inspectionInterval = 6;  // Default interval for cars over 7 years
-
-        if (yearsSinceManufacture <= 7)
+        double cost = Seats <= 10 ? 240000 : 320000;
+        if (IsRegisteredForTransport)
         {
-            if (Seats <= 10)
-            {
-                inspectionInterval = IsBusiness ? 12 : 24;
-            }
-            else
-            {
-                inspectionInterval = 12;
-            }
+            cost /= 2;
         }
-
-        return inspectionInterval;
+        return cost;
     }
 
-    public double CalculateInspectionFee()
+    public override DateTime CalculateNextInspectionDate(DateTime currentDate)
     {
-        double fee = Seats <= 10 ? 240000 : 320000;
-        return fee;
+        int yearsSinceProduction = currentDate.Year - ProductionDate.Year;
+        int inspectionInterval = yearsSinceProduction <= 7 ? (Seats <= 10 ? 2 : 1) : 0;
+        return currentDate.AddMonths(6 * inspectionInterval);
+    }
+
+    public override bool HasBeautifulLicensePlate()
+    {
+        string serialNumber = LicensePlate.Substring(6, 5);
+        return serialNumber.Distinct().Count() <= 2;
     }
 
     public override string ToString()
     {
-        return base.ToString() + $", So cho: {Seats}, Đang ky kinh doanh: {IsBusiness}";
+        return base.ToString() + $", Số chỗ ngồi: {Seats}, Đăng ký kinh doanh: {IsRegisteredForTransport}";
     }
 }
 
 class Truck : Vehicle
 {
-    public double Payload { get; }
+    public double LoadCapacity { get; }
 
-    public Truck(DateTime manufactureDate, string licensePlate, double payload)
-        : base(manufactureDate, licensePlate)
+    public Truck(DateTime productionDate, string licensePlate, double loadCapacity)
+        : base(productionDate, licensePlate)
     {
-        Payload = payload;
+        LoadCapacity = loadCapacity;
     }
 
-    public override int CalculateInspectionInterval()
+    public override double CalculateInspectionCost(DateTime inspectionDate)
     {
-        int yearsSinceManufacture = DateTime.Now.Year - ManufactureDate.Year;
-        int inspectionInterval = yearsSinceManufacture <= 20 ? 6 : 3;
-        return inspectionInterval;
-    }
-
-    public double CalculateInspectionFee()
-    {
-        double fee;
-        if (Payload > 20)
+        if (LoadCapacity > 20)
         {
-            fee = 560000;
+            return 560000;
         }
-        else if (Payload >= 7)
+        else if (LoadCapacity >= 7)
         {
-            fee = 350000;
+            return 350000;
         }
         else
         {
-            fee = 320000;
+            return 320000;
         }
-        return fee;
+    }
+
+    public override DateTime CalculateNextInspectionDate(DateTime currentDate)
+    {
+        int yearsSinceProduction = currentDate.Year - ProductionDate.Year;
+        int inspectionInterval = yearsSinceProduction <= 20 ? 1 : 0;
+        return currentDate.AddMonths(6 * inspectionInterval);
     }
 
     public override string ToString()
     {
-        return base.ToString() + $", Trong tai: {Payload} tan";
+        return base.ToString() + $", Trọng tải: {LoadCapacity} tấn";
     }
 }
