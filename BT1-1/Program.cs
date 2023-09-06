@@ -87,7 +87,7 @@ class Program
         DateTime ngaysanxuat = DateTime.Parse(Console.ReadLine());
         Console.Write("Nhap bien so xe (vd: 30C3-12345): ");
         string biensoxe = Console.ReadLine();
-        Console.Write("Nhap trong tai (tấn): ");
+        Console.Write("Nhap trong tai (tan): ");
         double trongtai = double.Parse(Console.ReadLine());
 
         XETAI xetai1 = new XETAI(ngaysanxuat, biensoxe, trongtai);
@@ -191,20 +191,38 @@ class Program
 
         foreach (var xeoto1 in xeoto)
         {
-            int thoigiankiemtra = xeoto1.thoigiankiemtra();
+            int thoigiankiemtra = xeoto1.thoigiankiemtraTHDB();
             double phidangkiemtra = xeoto1.sotiendangkiemtungxehientai();
 
             double tienDangKiem = 0;
             DateTime ngaySx = xeoto1.ngaykiemtra;
             DateTime ngayHienTai = DateTime.Now;
+            int dem = 0,dem1=0;
 
             while (ngaySx < ngayHienTai)
             {
+                if (thoigiankiemtra > 13) 
+                {
+                    ++dem1;
+                }
+                    else
+                    {
+                        ++dem;
+                    }
+                if (dem > 7)
+                {
+                    thoigiankiemtra = 6;
+                }
+                if (dem1 > 4)
+                {
+                    thoigiankiemtra = 6;
+                }
                 if (ngaySx != xeoto1.ngaykiemtra)
                 {
                     tienDangKiem += phidangkiemtra;
                 }
                 ngaySx = ngaySx.AddMonths(thoigiankiemtra);
+
             }
             Console.WriteLine($"Xe o to co bien so {xeoto1.BIENSOXE} , Tong phi đang kiem: {tienDangKiem}");
             tongphidangkiem += tienDangKiem;
@@ -212,8 +230,9 @@ class Program
 
         foreach (var xetai1 in xetai)
         {
-            int thoigiankiemtra = xetai1.thoigiankiemtra();
+            int thoigiankiemtra = 6;
             double phidangkiemtra = xetai1.sotiendangkiemtungxehientai();
+            int dem2 = 0;
 
             double tienDangKiem = 0;
             DateTime ngaySx = xetai1.ngaykiemtra;
@@ -221,6 +240,14 @@ class Program
 
             while (ngaySx < ngayHienTai)
             {
+                if (thoigiankiemtra > 4)
+                {
+                    ++dem2;
+                }
+                if (dem2 > 40)
+                {
+                    thoigiankiemtra = 3;
+                }
                 if (ngaySx != xetai1.ngaykiemtra)
                 {
                     tienDangKiem += phidangkiemtra;
