@@ -4,8 +4,8 @@ using System.Linq;
 
 class Program
 {
-    static List<Car> cars = new List<Car>();
-    static List<Truck> trucks = new List<Truck>();
+    static List<XEOTO> xeoto = new List<XEOTO>();
+    static List<XETAI> xetai = new List<XETAI>();
 
     static void Main(string[] args)
     {
@@ -24,36 +24,36 @@ class Program
             Console.WriteLine("0. Thoat");
 
             Console.Write("Nhap lua chon cua ban: ");
-            int choice = int.Parse(Console.ReadLine());
+            int chon = int.Parse(Console.ReadLine());
 
-            switch (choice)
+            switch (chon)
             {
                 case 1:
-                    AddCar();
+                    themxeoto();
                     break;
                 case 2:
-                    AddTruck();
+                    themxetai();
                     break;
                 case 3:
-                    DisplayAllVehicles();
+                    xuattatcaxe();
                     break;
                 case 4:
-                    FindCarWithMostSeats();
+                    xecochongoilonnhat();
                     break;
                 case 5:
-                    SortTrucksByPayload();
+                    xapsepxetaitheotrongtai();
                     break;
                 case 6:
-                    DisplayBeautifulLicensePlates();
+                    xuatbiensoxedep();
                     break;
                 case 7:
-                    CalculateInspectionFee();
+                    sotiendangkiemtungxehientai();
                     break;
                 case 8:
-                    CalculateNextInspectionDate();
+                    sothoigiandangkiemtungxesaptoi();
                     break;
                 case 9:
-                    CalculateTotalInspectionFees();
+                    tongsotiendadangkiem();
                     break;
                 case 0:
                     Environment.Exit(0);
@@ -65,57 +65,57 @@ class Program
         }
     }
 
-    static void AddCar()
+    static void themxeoto()
     {
         Console.Write("Nhap ngay san xuat (yyyy-MM-dd): ");
-        DateTime manufactureDate = DateTime.Parse(Console.ReadLine());
+        DateTime ngaysanxuat = DateTime.Parse(Console.ReadLine());
         Console.Write("Nhap bien so xe (vd: 62B6-67519): ");
-        string licensePlate = Console.ReadLine();
+        string biensoxe = Console.ReadLine();
         Console.Write("Nhap so cho ngoi: ");
-        int seats = int.Parse(Console.ReadLine());
+        int chongoi = int.Parse(Console.ReadLine());
         Console.Write("Co dang ky kinh doanh van tai (true/false): ");
-        bool isBusiness = bool.Parse(Console.ReadLine());
+        bool doanhnghiep = bool.Parse(Console.ReadLine());
 
-        Car car = new Car(manufactureDate, licensePlate, seats, isBusiness);
-        cars.Add(car);
+        XEOTO xeoto1 = new XEOTO(ngaysanxuat, biensoxe, chongoi, doanhnghiep);
+        xeoto.Add(xeoto1);
         Console.WriteLine("Them xe o to thanh cong!");
     }
 
-    static void AddTruck()
+    static void themxetai()
     {
         Console.Write("Nhap ngay san xuat (yyyy-MM-dd): ");
-        DateTime manufactureDate = DateTime.Parse(Console.ReadLine());
+        DateTime ngaysanxuat = DateTime.Parse(Console.ReadLine());
         Console.Write("Nhap bien so xe (vd: 30C3-12345): ");
-        string licensePlate = Console.ReadLine();
+        string biensoxe = Console.ReadLine();
         Console.Write("Nhap trong tai (tấn): ");
-        double payload = double.Parse(Console.ReadLine());
+        double trongtai = double.Parse(Console.ReadLine());
 
-        Truck truck = new Truck(manufactureDate, licensePlate, payload);
-        trucks.Add(truck);
+        XETAI xetai1 = new XETAI(ngaysanxuat, biensoxe, trongtai);
+        xetai.Add(xetai1);
         Console.WriteLine("Them xe tai thanh cong!");
     }
 
-    static void DisplayAllVehicles()
+    static void xuattatcaxe()
     {
         Console.WriteLine("===== Danh sach xe o to =====");
-        foreach (var car in cars)
+        foreach (var xeoto1 in xeoto)
         {
-            Console.WriteLine(car.ToString());
+            Console.WriteLine(xeoto1.ToString());
         }
 
         Console.WriteLine("===== Danh sach xe tai =====");
-        foreach (var truck in trucks)
+        foreach (var xetai1 in xetai)
         {
-            Console.WriteLine(truck.ToString());
+            Console.WriteLine(xetai1.ToString());
         }
     }
 
-    static void FindCarWithMostSeats()
+    static void xecochongoilonnhat()
     {
-        var carWithMostSeats = cars.OrderByDescending(c => c.Seats).FirstOrDefault();
-        if (carWithMostSeats != null)
+        var sochongoi = xeoto.OrderByDescending(c => c.CHONGOI).FirstOrDefault();
+        if (sochongoi != null)
         {
-            Console.WriteLine($"Xe o to co so cho ngoi nhieu nhat: {carWithMostSeats.ToString()}");
+            Console.WriteLine($"Xe o to co so cho ngoi nhieu nhat: {sochongoi.ToString()}");
         }
         else
         {
@@ -123,212 +123,223 @@ class Program
         }
     }
 
-    static void SortTrucksByPayload()
+    static void xapsepxetaitheotrongtai()
     {
-        var sortedTrucks = trucks.OrderBy(t => t.Payload).ToList();
+        var sotrongtai = xetai.OrderBy(t => t.TRONGTAI).ToList();
         Console.WriteLine("===== Danh sach xe tai sap xep theo trong tai tang dan =====");
-        foreach (var truck in sortedTrucks)
+        foreach (var xetai1 in sotrongtai)
         {
-            Console.WriteLine(truck.ToString());
+            Console.WriteLine(xetai1.ToString());
         }
     }
 
-    static void DisplayBeautifulLicensePlates()
+    static void xuatbiensoxedep()
     {
-        var beautifulLicensePlates = cars.Where(c => IsBeautifulLicensePlate(c.LicensePlate))
-                                          .Select(c => c.LicensePlate)
-                                          .ToList();
+        var biensoxedep = xeoto.Where(c => timbiensoxedep(c.BIENSOXE)).Select(c => c.BIENSOXE).ToList();
+        var biensoxedep1 = xetai.Where(b => timbiensoxedep(b.BIENSOXE)).Select(b => b.BIENSOXE).ToList();
+
         Console.WriteLine("===== Danh sach cac bien so xe đep =====");
-        foreach (var licensePlate in beautifulLicensePlates)
+        foreach (var biensoxe in biensoxedep.Concat(biensoxedep1))
         {
-            Console.WriteLine(licensePlate);
+            Console.WriteLine(biensoxe);
         }
     }
 
-    static void CalculateInspectionFee()
+    static void sotiendangkiemtungxehientai()
     {
-        double totalFee = 0;
 
-        foreach (var car in cars)
+        foreach (var xeoto1 in xeoto)
         {
-            int inspectionInterval = car.CalculateInspectionInterval();
-            double inspectionFee = car.CalculateInspectionFee();
+            int khoanthoigiandangkiem = xeoto1.thoigiankiemtra();
+            double phikiemtra = xeoto1.sotiendangkiemtungxehientai();
 
-            totalFee += inspectionFee;
 
-            Console.WriteLine($"Bien so: {car.LicensePlate}, Thoi gian đang kiem: {inspectionInterval} thang, Phi đang kiem: {inspectionFee} VND");
+            Console.WriteLine($"Bien so: {xeoto1.BIENSOXE}, Thoi gian đang kiem: {khoanthoigiandangkiem} thang, Phi đang kiem: {phikiemtra} VND");
         }
 
-        foreach (var truck in trucks)
+        foreach (var xetai1 in xetai)
         {
-            int inspectionInterval = truck.CalculateInspectionInterval();
-            double inspectionFee = truck.CalculateInspectionFee();
+            int khoanthoigiandangkiem = xetai1.thoigiankiemtra();
+            double phikiemtra = xetai1.sotiendangkiemtungxehientai();
 
-            totalFee += inspectionFee;
 
-            Console.WriteLine($"Bien so: {truck.LicensePlate}, Thoi gian đang kiem: {inspectionInterval} thang, Phi đang kiem: {inspectionFee} VND");
+            Console.WriteLine($"Bien so: {xetai1.BIENSOXE}, Thoi gian đang kiem: {khoanthoigiandangkiem} thang, Phi đang kiem: {phikiemtra} VND");
         }
 
-        Console.WriteLine($"Tong phi đang kiem: {totalFee} VND");
     }
 
-    static void CalculateNextInspectionDate()
+    static void sothoigiandangkiemtungxesaptoi()
     {
-        Console.Write("Nhap bien so xe: ");
-        string licensePlate = Console.ReadLine();
-
-        var car = cars.FirstOrDefault(c => c.LicensePlate == licensePlate);
-        var truck = trucks.FirstOrDefault(t => t.LicensePlate == licensePlate);
-
-        if (car != null)
+        foreach (var phuongtien in xeoto.Concat<phuongtien>(xetai))
         {
-            int nextInspectionInterval = car.CalculateInspectionInterval();
-            DateTime nextInspectionDate = DateTime.Now.AddMonths(nextInspectionInterval);
+            int thoigiankiemtra = phuongtien.thoigiankiemtra();
+            DateTime ngaySx = phuongtien.ngaykiemtra;
+            DateTime ngayHienTai = DateTime.Now;
 
-            Console.WriteLine($"Xe o to co bien so {licensePlate}, Thoi gian đang kiem tiep theo: {nextInspectionDate.ToString("yyyy-MM-dd")}");
-        }
-        else if (truck != null)
-        {
-            int nextInspectionInterval = truck.CalculateInspectionInterval();
-            DateTime nextInspectionDate = DateTime.Now.AddMonths(nextInspectionInterval);
+            while (ngaySx < ngayHienTai)
+            {
+                ngaySx = ngaySx.AddMonths(thoigiankiemtra);
+            }
 
-            Console.WriteLine($"Xe tai co bien so {licensePlate}, Thoi gian đang kiem tiep theo: {nextInspectionDate.ToString("yyyy-MM-dd")}");
-        }
-        else
-        {
-            Console.WriteLine("Khong tim thay xe voi bien so đa nhap.");
+            Console.WriteLine($"Xe co bien so {phuongtien.BIENSOXE}, Thoi gian đang kiem tiep theo: {ngaySx:yyyy-MM-dd}");
         }
     }
 
-    static void CalculateTotalInspectionFees()
+    static void tongsotiendadangkiem()
     {
-        double totalFee = 0;
+        double tongphidangkiem = 0;
 
-        foreach (var car in cars)
+        foreach (var xeoto1 in xeoto)
         {
-            double inspectionFee = car.CalculateInspectionFee();
-            totalFee += inspectionFee;
+            int thoigiankiemtra = xeoto1.thoigiankiemtra();
+            double phidangkiemtra = xeoto1.sotiendangkiemtungxehientai();
+
+            double tienDangKiem = 0;
+            DateTime ngaySx = xeoto1.ngaykiemtra;
+            DateTime ngayHienTai = DateTime.Now;
+
+            while (ngaySx < ngayHienTai)
+            {
+                if (ngaySx != xeoto1.ngaykiemtra)
+                {
+                    tienDangKiem += phidangkiemtra;
+                }
+                ngaySx = ngaySx.AddMonths(thoigiankiemtra);
+            }
+            Console.WriteLine($"Xe o to co bien so {xeoto1.BIENSOXE} , Tong phi đang kiem: {tienDangKiem}");
+            tongphidangkiem += tienDangKiem;
         }
 
-        foreach (var truck in trucks)
+        foreach (var xetai1 in xetai)
         {
-            double inspectionFee = truck.CalculateInspectionFee();
-            totalFee += inspectionFee;
+            int thoigiankiemtra = xetai1.thoigiankiemtra();
+            double phidangkiemtra = xetai1.sotiendangkiemtungxehientai();
+
+            double tienDangKiem = 0;
+            DateTime ngaySx = xetai1.ngaykiemtra;
+            DateTime ngayHienTai = DateTime.Now;
+
+            while (ngaySx < ngayHienTai)
+            {
+                if (ngaySx != xetai1.ngaykiemtra)
+                {
+                    tienDangKiem += phidangkiemtra;
+                }
+                ngaySx = ngaySx.AddMonths(thoigiankiemtra);
+            }
+            Console.WriteLine($"Xe tai co bien so {xetai1.BIENSOXE}, Tong phi đang kiem: {tienDangKiem}");
+            tongphidangkiem += tienDangKiem;
         }
 
-        Console.WriteLine($"Tong so tien đa đang kiem: {totalFee} VND");
+        Console.WriteLine($"Tong so tien đã đăng kiem: {tongphidangkiem} VND");
     }
 
-    static bool IsBeautifulLicensePlate(string licensePlate)
+    static bool timbiensoxedep(string biensoxe)
     {
-        string lastFiveDigits = licensePlate.Substring(6, 5);
-        return lastFiveDigits.Distinct().Count() <= 2;
+        string namsocuoi = biensoxe.Substring(5, 5);
+        return namsocuoi.Distinct().Count() <= 2;
     }
 }
-
-class Vehicle
+class phuongtien
 {
-    public DateTime ManufactureDate { get; }
-    public string LicensePlate { get; }
+    public DateTime ngaykiemtra { get; }
+    public string BIENSOXE { get; }
 
-    public Vehicle(DateTime manufactureDate, string licensePlate)
+    public phuongtien(DateTime ngaysanxuat, string biensoxe)
     {
-        ManufactureDate = manufactureDate;
-        LicensePlate = licensePlate;
+        ngaykiemtra = ngaysanxuat;
+        BIENSOXE = biensoxe;
     }
 
-    public virtual int CalculateInspectionInterval()
+    public virtual int thoigiankiemtra()
     {
         return 6;
     }
 
     public override string ToString()
     {
-        return $"Bien so: {LicensePlate}, Ngay san xuat: {ManufactureDate.ToString("yyyy-MM-dd")}";
+        return $"Bien so: {BIENSOXE}, Ngay san xuat: {ngaykiemtra.ToString("yyyy-MM-dd")}";
     }
 }
-
-class Car : Vehicle
+class XEOTO : phuongtien
 {
-    public int Seats { get; }
-    public bool IsBusiness { get; }
+    public int CHONGOI { get; }
+    public bool ladoanhnghiep { get; }
 
-    public Car(DateTime manufactureDate, string licensePlate, int seats, bool isBusiness)
-        : base(manufactureDate, licensePlate)
+    public XEOTO(DateTime ngaysanxuat, string biensoxe, int chongoi, bool doanhnghiep)
+        : base(ngaysanxuat, biensoxe)
     {
-        Seats = seats;
-        IsBusiness = isBusiness;
+        CHONGOI = chongoi;
+        ladoanhnghiep = doanhnghiep;
     }
 
-    public override int CalculateInspectionInterval()
+    public override int thoigiankiemtra()
     {
-        int yearsSinceManufacture = DateTime.Now.Year - ManufactureDate.Year;
-        int inspectionInterval = 6;  // Default interval for cars over 7 years
+        int tuoicuaxe = DateTime.Now.Year - ngaykiemtra.Year;
+        int khoanthoigiandangkiem = 6;
 
-        if (yearsSinceManufacture <= 7)
+        if (tuoicuaxe <= 7)
         {
-            if (Seats <= 10)
+            if (CHONGOI <= 9)
             {
-                inspectionInterval = IsBusiness ? 12 : 24;
+                khoanthoigiandangkiem = ladoanhnghiep ? 12 : 24;
             }
             else
             {
-                inspectionInterval = 12;
+                khoanthoigiandangkiem = 12;
             }
         }
 
-        return inspectionInterval;
+        return khoanthoigiandangkiem;
     }
 
-    public double CalculateInspectionFee()
+    public double sotiendangkiemtungxehientai()
     {
-        double fee = Seats <= 10 ? 240000 : 320000;
-        return fee;
+        double phidangkiem = CHONGOI <= 10 ? 240000 : 320000;
+        return phidangkiem;
     }
 
     public override string ToString()
     {
-        return base.ToString() + $", So cho: {Seats}, Đang ky kinh doanh: {IsBusiness}";
+        return base.ToString() + $", So cho: {CHONGOI}, Đang ky kinh doanh: {ladoanhnghiep}";
     }
 }
-
-class Truck : Vehicle
+class XETAI : phuongtien
 {
-    public double Payload { get; }
+    public double TRONGTAI { get; }
 
-    public Truck(DateTime manufactureDate, string licensePlate, double payload)
-        : base(manufactureDate, licensePlate)
+    public XETAI(DateTime ngaysanxuat, string biensoxe, double trongtai) : base(ngaysanxuat, biensoxe)
     {
-        Payload = payload;
+        TRONGTAI = trongtai;
     }
 
-    public override int CalculateInspectionInterval()
+    public override int thoigiankiemtra()
     {
-        int yearsSinceManufacture = DateTime.Now.Year - ManufactureDate.Year;
-        int inspectionInterval = yearsSinceManufacture <= 20 ? 6 : 3;
-        return inspectionInterval;
+        int tuoicuaxe = DateTime.Now.Year - ngaykiemtra.Year;
+        int khoanthoigiandangkiem = tuoicuaxe <= 20 ? 6 : 3;
+        return khoanthoigiandangkiem;
     }
 
-    public double CalculateInspectionFee()
+    public double sotiendangkiemtungxehientai()
     {
-        double fee;
-        if (Payload > 20)
+        double phidangkiem;
+        if (TRONGTAI > 20)
         {
-            fee = 560000;
+            phidangkiem = 560000;
         }
-        else if (Payload >= 7)
+        else if (TRONGTAI >= 7)
         {
-            fee = 350000;
+            phidangkiem = 350000;
         }
         else
         {
-            fee = 320000;
+            phidangkiem = 320000;
         }
-        return fee;
+        return phidangkiem;
     }
 
     public override string ToString()
     {
-        return base.ToString() + $", Trong tai: {Payload} tan";
+        return base.ToString() + $", Trong tai: {TRONGTAI} tan";
     }
 }
